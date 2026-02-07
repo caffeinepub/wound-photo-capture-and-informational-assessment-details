@@ -1,0 +1,219 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Wound photo capture, questionnaire, report, and history (frontend)",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Provide photo capture (device camera when supported) or image upload with preview and ability to retake/replace before submission.",
+      "acceptanceCriteria": [
+        "User can choose between camera capture (when supported) and file upload",
+        "A clear image preview is shown after selection",
+        "User can replace the image before submitting"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/wound/PhotoInput.tsx",
+          "operation": "create",
+          "description": "Create a photo input component that supports (1) camera capture via the selected `camera` component hook and (2) file upload; show a stable-dimension live preview for camera mode, show an image preview after selection, and provide clear actions to retake/replace/clear. Use the `camera/useCamera` hook to power camera preview + capture. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/wound/photoUtils.ts",
+          "operation": "create",
+          "description": "Add utilities for image handling (e.g., validating image MIME types, creating/revoking object URLs for preview, converting File -> Uint8Array for upload)."
+        },
+        {
+          "path": "frontend/src/pages/NewWoundEntryPage.tsx",
+          "operation": "create",
+          "description": "Create the 'New Entry' page that wires in `PhotoInput` and maintains the selected photo File state, including a pre-submit replace flow (e.g., 'Change photo' returning to selection)."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the app shell and route/navigation wiring to reach the 'New Entry' page (ensuring the photo capture/upload flow is not orphaned)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Collect structured wound details in a form and require user acknowledgement of a medical disclaimer before allowing submission.",
+      "acceptanceCriteria": [
+        "The UI includes a structured questionnaire with clearly labeled fields",
+        "Submission is blocked until the user acknowledges a medical disclaimer"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/wound/QuestionnaireForm.tsx",
+          "operation": "create",
+          "description": "Create a structured questionnaire component with clearly labeled fields for body location, approximate size, color/appearance, bleeding level, pain level, time since injury, and infection signs (warmth/swelling/pus/fever). Include a required medical disclaimer acknowledgement control that gates submission."
+        },
+        {
+          "path": "frontend/src/components/wound/woundModels.ts",
+          "operation": "create",
+          "description": "Define TypeScript types/enums for questionnaire fields and helper functions to serialize responses into a stable string representation for saving (aligned with backend interface expecting `questionnaireResponses: string`)."
+        },
+        {
+          "path": "frontend/src/pages/NewWoundEntryPage.tsx",
+          "operation": "modify",
+          "description": "Wire `QuestionnaireForm` into the New Entry flow, enforce validation (including disclaimer acknowledgement) and block submission until required inputs are present."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Generate an informational wound details report from user inputs only, showing summary, risk flags, and guidance with escalation advice when high-risk flags exist.",
+      "acceptanceCriteria": [
+        "After submission, the user sees a report page/section with a readable summary and risk flags",
+        "The report explicitly states it is informational and not a diagnosis",
+        "Escalation advice is shown when high-risk flags are present"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/wound/report/generateReport.ts",
+          "operation": "create",
+          "description": "Implement deterministic report generation (no AI/vision inference) that turns questionnaire responses into: (1) a readable summary, (2) basic risk flags (infection signs checked, uncontrolled bleeding, severe pain, fever), and (3) general care guidance text including clear escalation advice when flags indicate higher risk."
+        },
+        {
+          "path": "frontend/src/pages/ReportPage.tsx",
+          "operation": "create",
+          "description": "Create a report view that renders the generated report, summary, and risk flags, and includes an explicit 'informational, not a diagnosis' statement. Support rendering a photo preview alongside the report."
+        },
+        {
+          "path": "frontend/src/pages/NewWoundEntryPage.tsx",
+          "operation": "modify",
+          "description": "On successful submission, navigate to (or reveal) the report view using the generated report computed from the user's inputs (not from the image). Ensure escalation guidance is visibly emphasized when high-risk flags are present."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register and wire navigation to the report view (route or conditional view) so users reliably see the post-submission report."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Add a History view that loads prior wound entries from the backend canister APIs and allows opening an entry to see saved photo, inputs, and report.",
+      "acceptanceCriteria": [
+        "A history list renders with at least timestamp and a brief summary",
+        "Clicking a history item opens a detail view with the stored image and report",
+        "History data is loaded from the backend canister APIs (not mocked)"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/backendClient.ts",
+          "operation": "create",
+          "description": "Create a small frontend client wrapper for calling backend canister capabilities defined in `frontend/src/backend.d.ts`, including `getWoundHistory()` and `addWoundEntry(...)`. Ensure calls are real canister API calls (not mocked) and are usable by pages/hooks."
+        },
+        {
+          "path": "frontend/src/hooks/useWoundHistory.ts",
+          "operation": "create",
+          "description": "Add a React Query hook to load and cache wound history from the backend canister API, returning loading/error states and a refetch mechanism after new submissions."
+        },
+        {
+          "path": "frontend/src/pages/HistoryPage.tsx",
+          "operation": "create",
+          "description": "Create a history list UI that renders entries (at minimum timestamp + brief summary derived from stored questionnaireResponses/report text) and supports selecting an item to open a detail view."
+        },
+        {
+          "path": "frontend/src/pages/HistoryDetailPage.tsx",
+          "operation": "create",
+          "description": "Create a detail view for a selected history entry that shows the stored image (using `ExternalBlob.getDirectURL()` when available) plus the stored questionnaire response string and the saved generated report."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the History list and History detail views into app navigation/routing so they are reachable and not orphaned."
+        },
+        {
+          "path": "frontend/src/pages/NewWoundEntryPage.tsx",
+          "operation": "modify",
+          "description": "Update submission flow to call the backend canister capability `addWoundEntry(photo, contentType, questionnaireResponses, generatedReport)`, then trigger history refetch/invalidation so new entries appear in History."
+        },
+        {
+          "path": "frontend/src/components/wound/blobStorageAdapters.ts",
+          "operation": "create",
+          "description": "Integrate the selected `blob-storage` component on the frontend by converting captured/uploaded images into `ExternalBlob` instances for upload and by rendering stored images using `ExternalBlob.getDirectURL()` for History details. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Apply a coherent, health-oriented visual theme (avoid blue/purple) consistently across the capture, questionnaire, report, and history screens.",
+      "acceptanceCriteria": [
+        "All core screens share a consistent design system (buttons, cards, headings, form controls)",
+        "Theme avoids blue and purple as primary brand colors"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Create global styling entry point with Tailwind directives and CSS variables for a consistent warm-neutral/green theme (explicitly avoiding blue/purple as primary brand colors). Define shared typography, spacing, and base styles for forms/buttons/cards."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Adjust/confirm Tailwind theme tokens are driven by CSS variables used by the app theme (primary/secondary/accent/destructive/muted) to ensure consistent styling across screens without modifying any immutable UI component files."
+        },
+        {
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "create",
+          "description": "Create a layout wrapper (header + main container) that applies consistent spacing, headings, and shared components styling conventions across New Entry, Report, and History screens."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wrap all routes/views in `AppLayout` so the theme and layout are applied consistently across the app."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Show clear safety and privacy text about informational nature (not diagnosis) and photo storage implications and PII caution.",
+      "acceptanceCriteria": [
+        "Disclaimer is visible before or at submission and in the report view",
+        "Privacy note about photo storage is present in the UI"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/wound/Disclaimers.tsx",
+          "operation": "create",
+          "description": "Create reusable disclaimer components including (1) safety text stating the app is informational and not a medical diagnosis, and (2) privacy text explaining photos are uploaded and stored via canister-managed storage (and may be retrievable later) and advising users to avoid personally identifying images if they do not want them stored."
+        },
+        {
+          "path": "frontend/src/pages/NewWoundEntryPage.tsx",
+          "operation": "modify",
+          "description": "Render the safety + privacy text before/at submission (near the acknowledgement control) so users see it prior to uploading/saving."
+        },
+        {
+          "path": "frontend/src/pages/ReportPage.tsx",
+          "operation": "modify",
+          "description": "Ensure the report view repeats the 'informational, not a diagnosis' statement and includes the privacy note so it remains visible after submission."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Render the generated static assets (logo/app icon and hero/empty-state illustration) from frontend/public/assets/generated in the UI.",
+      "acceptanceCriteria": [
+        "Assets are loaded from frontend/public/assets/generated and appear in the UI without backend involvement"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/branding/BrandMark.tsx",
+          "operation": "create",
+          "description": "Add a small branding component that displays the app logo from frontend/public/assets/generated/app-logo.dim_512x512.png in the header area (static asset, no backend involvement)."
+        },
+        {
+          "path": "frontend/src/pages/HistoryPage.tsx",
+          "operation": "modify",
+          "description": "Use the empty-state illustration from frontend/public/assets/generated/hero-illustration.dim_1600x900.png when history is empty (static asset, no backend involvement)."
+        },
+        {
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "modify",
+          "description": "Wire `BrandMark` into the shared header so the generated logo at frontend/public/assets/generated/app-logo.dim_512x512.png is visible across core screens."
+        }
+      ]
+    }
+  ]
+}

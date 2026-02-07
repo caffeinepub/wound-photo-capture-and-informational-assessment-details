@@ -1,0 +1,18 @@
+{
+  "frontend/src/App.tsx": "Main application component with TanStack Router setup, defining routes for new entry, history list, history detail, and report pages, wrapped with Toaster for notifications.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for fetching wound history and adding new wound entries, with proper error handling and cache invalidation.",
+  "frontend/src/components/layout/AppLayout.tsx": "Shared layout component with header navigation, brand logo, main content outlet, and footer with attribution.",
+  "frontend/src/components/branding/BrandMark.tsx": "Simple component that displays the app logo from generated assets.",
+  "frontend/src/pages/NewWoundEntryPage.tsx": "Main entry page with photo input, questionnaire form, disclaimers, and submission logic that uploads to backend and navigates to report using a module-level store for data passing.",
+  "frontend/src/pages/ReportPage.tsx": "Displays generated wound assessment report with photo preview, risk flags, summary, care guidance, and escalation advice, retrieving data from the module-level store set by NewWoundEntryPage.",
+  "frontend/src/pages/HistoryPage.tsx": "Lists all wound entries from backend with empty state illustration, showing timestamp and summary for each entry with navigation to details.",
+  "frontend/src/pages/HistoryDetailPage.tsx": "Detail view for a single history entry showing stored photo via ExternalBlob.getDirectURL(), questionnaire responses, and generated report.",
+  "frontend/src/components/wound/PhotoInput.tsx": "Photo capture/upload component using useCamera hook with camera preview, capture button, file upload option, and preview with retake functionality.",
+  "frontend/src/components/wound/QuestionnaireForm.tsx": "Structured form collecting wound details (location, size, appearance, bleeding, pain, time, infection signs) with required disclaimer checkbox.",
+  "frontend/src/components/wound/woundModels.ts": "TypeScript interfaces and serialization functions for questionnaire data structure.",
+  "frontend/src/components/wound/photoUtils.ts": "Utility functions for image file validation and File to Uint8Array<ArrayBuffer> conversion with proper typing for backend upload.",
+  "frontend/src/components/wound/report/generateReport.ts": "Deterministic report generation logic that analyzes questionnaire responses to create risk flags, summary, care guidance, and escalation advice.",
+  "frontend/src/components/wound/Disclaimers.tsx": "Reusable disclaimer components for medical disclaimer and privacy/storage notice displayed throughout the app.",
+  "frontend/src/index.css": "Global styles with warm, health-oriented OKLCH color system using earthy oranges and teals, avoiding blue and purple as requested.",
+  "frontend/tailwind.config.js": "Tailwind configuration with custom color tokens, Inter font family, and extended design system for consistent styling."
+}

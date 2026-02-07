@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --radius: 0.625rem;
+        --background: 0.98 0 0;
+        --foreground: 0.25 0 0;
+        --card: 1 0 0;
+        --card-foreground: 0.25 0 0;
+        --popover: 1 0 0;
+        --popover-foreground: 0.25 0 0;
+        --primary: 0.55 0.15 45;
+        --primary-foreground: 0.98 0 0;
+        --secondary: 0.92 0.05 85;
+        --secondary-foreground: 0.25 0 0;
+        --muted: 0.94 0.02 85;
+        --muted-foreground: 0.50 0.03 85;
+        --accent: 0.65 0.18 145;
+        --accent-foreground: 0.98 0 0;
+        --destructive: 0.55 0.22 25;
+        --destructive-foreground: 0.98 0 0;
+        --border: 0.88 0.02 85;
+        --input: 0.88 0.02 85;
+        --ring: 0.55 0.15 45;
+        --chart-1: 0.60 0.18 145;
+        --chart-2: 0.55 0.15 45;
+        --chart-3: 0.65 0.12 85;
+        --chart-4: 0.50 0.20 25;
+        --chart-5: 0.70 0.15 180;
+        --sidebar: 0.98 0 0;
+        --sidebar-foreground: 0.25 0 0;
+        --sidebar-primary: 0.55 0.15 45;
+        --sidebar-primary-foreground: 0.98 0 0;
+        --sidebar-accent: 0.94 0.02 85;
+        --sidebar-accent-foreground: 0.25 0 0;
+        --sidebar-border: 0.88 0.02 85;
+        --sidebar-ring: 0.55 0.15 45;
+    }
+
+    .dark {
+        --background: 0.18 0.02 85;
+        --foreground: 0.95 0.02 85;
+        --card: 0.22 0.02 85;
+        --card-foreground: 0.95 0.02 85;
+        --popover: 0.20 0.02 85;
+        --popover-foreground: 0.95 0.02 85;
+        --primary: 0.65 0.18 45;
+        --primary-foreground: 0.15 0.02 45;
+        --secondary: 0.28 0.03 85;
+        --secondary-foreground: 0.95 0.02 85;
+        --muted: 0.28 0.03 85;
+        --muted-foreground: 0.65 0.03 85;
+        --accent: 0.45 0.15 145;
+        --accent-foreground: 0.95 0.02 85;
+        --destructive: 0.60 0.25 25;
+        --destructive-foreground: 0.95 0.02 85;
+        --border: 0.32 0.03 85;
+        --input: 0.32 0.03 85;
+        --ring: 0.65 0.18 45;
+        --chart-1: 0.60 0.18 145;
+        --chart-2: 0.65 0.18 45;
+        --chart-3: 0.70 0.12 85;
+        --chart-4: 0.60 0.25 25;
+        --chart-5: 0.55 0.15 180;
+        --sidebar: 0.22 0.02 85;
+        --sidebar-foreground: 0.95 0.02 85;
+        --sidebar-primary: 0.65 0.18 45;
+        --sidebar-primary-foreground: 0.15 0.02 45;
+        --sidebar-accent: 0.28 0.03 85;
+        --sidebar-accent-foreground: 0.95 0.02 85;
+        --sidebar-border: 0.32 0.03 85;
+        --sidebar-ring: 0.65 0.18 45;
+    }
+
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+        font-feature-settings: "rlig" 1, "calt" 1;
+    }
+}

@@ -1,0 +1,163 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-implement-a-frontend-flow-that-lets-the-user-capture-a-photo-with-the-device-camera-or-upload-an-existing-image-file-shows-a-preview-and-allows-retaking-replacing-the-photo-before-submission",
+      "featureTitle": "Implement a frontend flow that lets the user capture a photo with the device camera or upload an existing image file, shows a preview, and allows retaking/replacing the photo before submission.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/wound/PhotoInput.tsx",
+        "frontend/src/components/wound/photoUtils.ts",
+        "frontend/src/pages/NewWoundEntryPage.tsx"
+      ],
+      "components": [
+        "camera@1.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-frontend-form-to-collect-structured-wound-details-e-g-body-location-approximate-size-color-appearance-bleeding-level-pain-level-time-since-injury-signs-of-infection-like-warmth-swelling-pus-fever-and-require-user-confirmation-that-the-information-is-not-medical-diagnosis-and-to-seek-professional-care-when-needed",
+      "featureTitle": "Add a frontend form to collect structured wound details (e.g., body location, approximate size, color/appearance, bleeding level, pain level, time since injury, signs of infection like warmth/swelling/pus/fever), and require user confirmation that the information is not medical diagnosis and to seek professional care when needed.",
+      "files": [
+        "frontend/src/components/wound/QuestionnaireForm.tsx",
+        "frontend/src/components/wound/woundModels.ts",
+        "frontend/src/pages/NewWoundEntryPage.tsx"
+      ],
+      "components": [
+        "camera@1.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-on-submission-generate-an-informational-wound-details-report-in-the-frontend-based-on-the-user-provided-inputs-not-ai-vision-inference-including-a-summary-of-inputs-basic-risk-flags-e-g-infection-signs-checked-uncontrolled-bleeding-severe-pain-fever-and-general-care-guidance-text-with-clear-escalation-advice",
+      "featureTitle": "On submission, generate an informational 'wound details' report in the frontend based on the user-provided inputs (not AI/vision inference), including: a summary of inputs, basic risk flags (e.g., infection signs checked, uncontrolled bleeding, severe pain, fever), and general care guidance text with clear escalation advice.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/wound/report/generateReport.ts",
+        "frontend/src/pages/NewWoundEntryPage.tsx",
+        "frontend/src/pages/ReportPage.tsx"
+      ],
+      "components": [
+        "camera@1.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-frontend-history-view-that-lists-prior-wound-entries-for-the-current-caller-and-allows-opening-an-entry-to-view-the-saved-photo-inputs-and-generated-report",
+      "featureTitle": "Add a frontend 'History' view that lists prior wound entries for the current caller and allows opening an entry to view the saved photo, inputs, and generated report.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/HistoryDetailPage.tsx",
+        "frontend/src/pages/HistoryPage.tsx",
+        "frontend/src/pages/NewWoundEntryPage.tsx"
+      ],
+      "components": [
+        "camera@1.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-establish-a-coherent-visual-theme-for-the-app-colors-typography-spacing-and-component-styling-suitable-for-a-health-related-informational-tool-and-apply-it-consistently-across-the-capture-upload-flow-questionnaire-report-and-history-views-avoid-blue-purple",
+      "featureTitle": "Establish a coherent visual theme for the app (colors, typography, spacing, and component styling) suitable for a health-related informational tool, and apply it consistently across the capture/upload flow, questionnaire, report, and history views (avoid blue & purple).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/layout/AppLayout.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "camera@1.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-include-clear-user-facing-safety-and-privacy-text-explain-that-the-app-does-not-provide-medical-diagnosis-and-indicate-whether-photos-are-stored-on-chain-in-canister-and-that-users-should-avoid-uploading-personally-identifying-images-if-they-do-not-want-them-stored",
+      "featureTitle": "Include clear user-facing safety and privacy text: explain that the app does not provide medical diagnosis, and indicate whether photos are stored on-chain/in-canister and that users should avoid uploading personally identifying images if they do not want them stored.",
+      "files": [
+        "frontend/src/components/wound/Disclaimers.tsx",
+        "frontend/src/pages/NewWoundEntryPage.tsx",
+        "frontend/src/pages/ReportPage.tsx"
+      ],
+      "components": [
+        "camera@1.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-render-the-generated-static-image-assets-logo-app-icon-and-a-simple-hero-empty-state-illustration-from-frontend-public-assets-generated-and-use-them-in-the-ui-e-g-header-branding-and-empty-history-state",
+      "featureTitle": "Render the generated static image assets (logo/app icon and a simple hero/empty-state illustration) from frontend/public/assets/generated and use them in the UI (e.g., header branding and empty history state).",
+      "files": [
+        "frontend/src/components/branding/BrandMark.tsx",
+        "frontend/src/components/layout/AppLayout.tsx",
+        "frontend/src/pages/HistoryPage.tsx"
+      ],
+      "components": [
+        "camera@1.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

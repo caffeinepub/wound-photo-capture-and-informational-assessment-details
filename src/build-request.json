@@ -1,0 +1,154 @@
+{
+  "kind": "build_request",
+  "title": "Wound photo capture and informational assessment details",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement a frontend flow that lets the user capture a photo with the device camera or upload an existing image file, shows a preview, and allows retaking/replacing the photo before submission.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "U want a app that takes a picture of a wound"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can choose between camera capture (when supported) and file upload",
+        "A clear image preview is shown after selection",
+        "User can replace the image before submitting"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Add a frontend form to collect structured wound details (e.g., body location, approximate size, color/appearance, bleeding level, pain level, time since injury, signs of infection like warmth/swelling/pus/fever), and require user confirmation that the information is not medical diagnosis and to seek professional care when needed.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "and give details about it"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The UI includes a structured questionnaire with clearly labeled fields",
+        "Submission is blocked until the user acknowledges a medical disclaimer"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "On submission, generate an informational 'wound details' report in the frontend based on the user-provided inputs (not AI/vision inference), including: a summary of inputs, basic risk flags (e.g., infection signs checked, uncontrolled bleeding, severe pain, fever), and general care guidance text with clear escalation advice.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "give details about it"
+        ]
+      },
+      "acceptanceCriteria": [
+        "After submission, the user sees a report page/section with a readable summary and risk flags",
+        "The report explicitly states it is informational and not a diagnosis",
+        "Escalation advice is shown when high-risk flags are present"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Create backend data structures and methods in the single Motoko actor (backend/main.mo) to store and retrieve wound entries consisting of: image bytes (or reference), image content type, timestamp, and the structured questionnaire responses and generated report text.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "takes a picture of a wound and give details about it"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend exposes a method to create a wound entry with photo + responses",
+        "Backend exposes a method to list entries for the caller (principal) with basic metadata (timestamp, location/summary fields)",
+        "Backend exposes a method to fetch a single entry by id including the saved report and image data (or a retrievable representation)"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Add a frontend 'History' view that lists prior wound entries for the current caller and allows opening an entry to view the saved photo, inputs, and generated report.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "give details about it"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A history list renders with at least timestamp and a brief summary",
+        "Clicking a history item opens a detail view with the stored image and report",
+        "History data is loaded from the backend canister APIs (not mocked)"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Establish a coherent visual theme for the app (colors, typography, spacing, and component styling) suitable for a health-related informational tool, and apply it consistently across the capture/upload flow, questionnaire, report, and history views (avoid blue & purple).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All core screens share a consistent design system (buttons, cards, headings, form controls)",
+        "Theme avoids blue and purple as primary brand colors"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Include clear user-facing safety and privacy text: explain that the app does not provide medical diagnosis, and indicate whether photos are stored on-chain/in-canister and that users should avoid uploading personally identifying images if they do not want them stored.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Disclaimer is visible before or at submission and in the report view",
+        "Privacy note about photo storage is present in the UI"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Render the generated static image assets (logo/app icon and a simple hero/empty-state illustration) from frontend/public/assets/generated and use them in the UI (e.g., header branding and empty history state).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Assets are loaded from frontend/public/assets/generated and appear in the UI without backend involvement"
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not use external AI/LLM or third-party image analysis services; the 'details' must be derived from user-provided inputs and static guidance text.",
+    "Backend must remain a single Motoko actor in backend/main.mo; only add migration.mo if state upgrades require it.",
+    "Do not modify files under frontend/src/components/ui or other immutablePaths listed in SYSTEM_CONTEXT; compose them from outside."
+  ],
+  "nonGoals": [
+    "Medical diagnosis, clinical triage, or automated wound classification from image content",
+    "Real-time chat, messaging, notifications, or email follow-ups",
+    "Third-party authentication providers (only Internet Identity is allowed, and is not required unless explicitly requested)"
+  ],
+  "imageRequirements": {
+    "required": [
+      "Minimal medical-style app logo mark with a bandage/wound-care motif, flat vector look, warm neutral palette (app-logo.dim_512x512.png)",
+      "Simple hero/empty-state illustration of a phone camera capturing a generic bandage icon, flat vector look, warm neutral palette (hero-illustration.dim_1600x900.png)"
+    ],
+    "edits": []
+  }
+}
